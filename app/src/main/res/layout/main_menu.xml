@@ -3,15 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-<TextView
-android:id="@+id/HelloWorld"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginStart="37dp"
-android:layout_marginTop="130dp"
-android:layout_marginBottom="10dp"
-android:fontFamily="sans-serif"
-android:text="Hello World"
-android:textSize="25sp" />
+    android:background="@color/light_blue">
+
+
+    <ImageView
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="295dp"
+        android:src="@drawable/settings" />
+
+    <ImageView
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="39dp"
+        android:src="@drawable/bluetooth" />
+
+    <ImageView
+        android:layout_width="184dp"
+        android:layout_height="184dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="115dp"
+        android:src="@drawable/power" />
+
+    <TextView
+        android:layout_width="152dp"
+        android:layout_height="97dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="369dp"
+        android:layout_marginEnd="218dp"
+        android:text="@string/Visual"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="152dp"
+        android:layout_height="97dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="481dp"
+        android:layout_marginEnd="220dp"
+        android:text="@string/Voice"
+        android:textSize="32dp"
+        android:textStyle="bold" />
+
 </RelativeLayout>

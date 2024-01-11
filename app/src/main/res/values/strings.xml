@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">VM_Drone</string>
+
+    <string name="Visual">Visual Mode</string>
+
+    <string name="Voice">Voice Mode</string>
 </resources>
