@@ -5,21 +5,21 @@
 
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/Home"
         android:title="Home"
         android:icon="@drawable/home"/>
     <item
         android:id="@+id/visual"
-        android:title="Settings"
+        android:title="@string/Visual"
         android:icon="@drawable/visual"
         android:iconTint="@color/light_blue"/>
     <item
         android:id="@+id/voice"
-        android:title="Settings"
+        android:title="@string/Voice"
         android:icon="@drawable/voice"/>
     <item
         android:id="@+id/location"
-        android:title="Settings"
+        android:title="@string/location"
         android:icon="@drawable/location"/>
     <item
         android:id="@+id/settings"

@@ -1,39 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue">
 
 
-
     <ImageView
         android:layout_width="84dp"
         android:layout_height="84dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="288dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="39dp"
-        android:src="@drawable/bluetooth"
-        android:contentDescription="Bluetooth button" />
+        android:layout_marginBottom="639dp"
+        android:contentDescription="Bluetooth button"
+        android:src="@drawable/bluetooth" />
 
     <ImageView
         android:layout_width="184dp"
         android:layout_height="184dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="112dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="115dp"
-        android:src="@drawable/power"
-        android:contentDescription="Power Button" />
+        android:layout_marginBottom="419dp"
+        android:contentDescription="Power Button"
+        android:src="@drawable/power" />
 
     <TextView
         android:layout_width="152dp"
         android:layout_height="97dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="369dp"
         android:layout_marginEnd="218dp"
+        android:layout_marginBottom="265dp"
         android:text="@string/Visual"
         android:textSize="32sp"
         android:textStyle="bold" />
@@ -42,37 +55,18 @@
         android:id="@+id/textView"
         android:layout_width="152dp"
         android:layout_height="97dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="39dp"
         android:layout_marginTop="481dp"
         android:layout_marginEnd="220dp"
+        android:layout_marginBottom="153dp"
         android:text="@string/Voice"
         android:textSize="32sp"
         android:textStyle="bold" />
-    <FrameLayout
-        android:id="@+id/flFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+
 
 </RelativeLayout>

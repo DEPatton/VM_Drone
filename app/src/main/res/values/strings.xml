@@ -4,4 +4,6 @@
     <string name="Visual">Visual Mode</string>
 
     <string name="Voice">Voice Mode</string>
+
+    <string name="location">GPS</string>
 </resources>
