@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "691625128745",
+    "project_id": "vm-drone",
+    "storage_bucket": "vm-drone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691625128745:android:f6c5c0864bc8b15ae3bd38",
+        "android_client_info": {
+          "package_name": "com.example.vm_drone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUumiSuUbA8Turc31gPsRcfnK9vOJqSKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
