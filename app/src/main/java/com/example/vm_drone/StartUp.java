@@ -3,6 +3,7 @@ package com.example.vm_drone;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ public class StartUp extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = MainActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
         replaceFragment(new Home());
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {

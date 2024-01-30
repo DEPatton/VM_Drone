@@ -71,4 +71,7 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation platform('com.google.firebase:firebase-bom:32.7.0')
     implementation("com.google.firebase:firebase-firestore")
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.13-RC2'
+    implementation 'io.reactivex.rxjava2:rxjavafx:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
