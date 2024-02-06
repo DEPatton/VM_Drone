@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
@@ -31,23 +33,20 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class Home extends Fragment {
 
     private static final String TAG = "Greedy";
 
     private static final int REQUEST_BLUETOOTH_PERMISSIONS = 1; // You can use any unique integer value
-
-
     private static final int REQUEST_ENABLE_BT = 1;
     //We will use a Handler to get the BT Connection states
     public static Handler handler;
+
     private final static int ERROR_READ = 0; // used in bluetooth handler to identify message update
     BluetoothDevice arduinoBTModule = null;
 
     String holdHumidityValue;
     Activity activity;
-    int realfeel;
 
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //We declare a default UUID to create the global variable
 
@@ -128,13 +127,20 @@ public class Home extends Fragment {
                         Log.d(TAG, "deviceHardwareAddress:" + deviceHardwareAddress);
                         //We append all devices to a String that we will display in the UI
                         btDevicesString = btDevicesString + deviceName + " || " + deviceHardwareAddress + "\n";
-                        //If we find the HC 06 device (the Arduino BT module)
+                        //If we find the HC 06 device (the Arduino BT module) exchanged for the raspberry pi for now
                         //We assign the device value to the Global variable BluetoothDevice
                         //We enable the button "Connect to HC 06 device"
                         if (deviceName.equals("HC-06")) {
                             Log.d(TAG, "HC-06 found");
                             arduinoUUID = device.getUuids()[0].getUuid();
                             arduinoBTModule = device;
+
+
+                            //Toast message whenever the drone connects to the application
+                            CharSequence text = "Drone connected";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast.makeText(activity, text, duration).show();
+
                             //HC -06 Found, enabling the button to read results
                             //connectToDevice.setEnabled(true);
                         }
@@ -208,8 +214,6 @@ public class Home extends Fragment {
                     });
 
         }
-
-
     }
 }
 

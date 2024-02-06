@@ -14,6 +14,8 @@ public class ConnectedBluetooth extends Thread {
     private final OutputStream _OutStream;
     private String valueRead;
 
+    private int timeOut = 0;
+
     private String humidity;
 
     public ConnectedBluetooth(BluetoothSocket socket) {
@@ -44,6 +46,15 @@ public class ConnectedBluetooth extends Thread {
 
     public String getHumidityRead() {return humidity;}
 
+    public void setCounter(int _counter)
+    {
+        timeOut = _counter;
+    }
+    public int getCounter()
+    {
+        return timeOut;
+    }
+
     //public String getReelFeelRead() {return humidity;}
 
     public void run() {
@@ -56,6 +67,7 @@ public class ConnectedBluetooth extends Thread {
         // Keep listening to the InputStream until an exception occurs.
         // We just want to get 1 temperature reading from the Arduino
         int readSecondValue;
+
         try {
             if (_InStream.available() > 0) {
                 while(bytes != 2) {
@@ -73,7 +85,10 @@ public class ConnectedBluetooth extends Thread {
                 humidity = readSecondValue + "%";
             } else {
                 // Handle the case where no data is available or implement a timeout mechanism.
-                int i = 0;
+                while(_InStream.available() > 0)
+                {
+                    timeOut++;
+                }
             }
 
         } catch (IOException e) {
