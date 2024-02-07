@@ -3,6 +3,7 @@ package com.example.vm_drone;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,14 +35,20 @@ public class GPS extends Fragment {
     private DocumentReference mapDoc;
     private String Latitude;
     private String Longitude;
+    MapView mapView;
 
+    private Activity activity = getActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Remove the super.onCreate(savedInstanceState) from onCreateView
         // It's not necessary and could cause issues
         // super.onCreate(savedInstanceState);
-        //MapView mapView = view.findViewById(R.id.mapView);
+         mapView = activity.findViewById(R.id.mapView);
+         //if(ActivityCompat.checkSelfPermission(activity,Manifest.permission.) != PackageManager.PERMISSION_GRANTED)
+         //{
+
+         //}
 
         View view = inflater.inflate(R.layout.gps_layout, container, false);
 
@@ -55,7 +63,7 @@ public class GPS extends Fragment {
     {
 
 
-                mapDoc = db.collection("GPS").document("GPS-data");
+        mapDoc = db.collection("GPS").document("GPS-data");
         //mapData.put("longitude", "137-67");
         //mapData.put("latitude", "678-09");
 
