@@ -9,8 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-
+import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +18,7 @@ import java.util.List;
 public class Voice extends Fragment {
 
     private String spokenText = "";
+    private ImageButton voiceImage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -30,9 +30,12 @@ public class Voice extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
     {
-        displaySpeechRecognizer();
+        voiceImage = view.findViewById(R.id.microphone);
+
         EditText speechInput = view.findViewById(R.id.TextDisplay);
+        voiceImage.setOnClickListener(view1 -> displaySpeechRecognizer());
         String spoken = GetSpokenText();
+        speechInput.setText(spoken);
     }
     private static final int SPEECH_REQUEST_CODE = 0;
 
@@ -55,7 +58,6 @@ public class Voice extends Fragment {
 
             //spokenText can now be accessed via a setter
             SetSpokenText(results.get(0));
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

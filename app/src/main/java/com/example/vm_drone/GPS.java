@@ -1,54 +1,36 @@
 package com.example.vm_drone;
 
 import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.maps.MapView;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
-
-public class GPS extends Fragment {
+public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference mapDoc;
     private String Latitude;
     private String Longitude;
+
+    private final Activity activity = getActivity();
+
     MapView mapView;
 
-    private Activity activity = getActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Remove the super.onCreate(savedInstanceState) from onCreateView
         // It's not necessary and could cause issues
         // super.onCreate(savedInstanceState);
-         mapView = activity.findViewById(R.id.mapView);
-         //if(ActivityCompat.checkSelfPermission(activity,Manifest.permission.) != PackageManager.PERMISSION_GRANTED)
-         //{
-
-         //}
 
         View view = inflater.inflate(R.layout.gps_layout, container, false);
 
@@ -62,17 +44,24 @@ public class GPS extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
     {
 
+        mapView = view.findViewById(R.id.mapView);
+        //if(ActivityCompat.checkSelfPermission(activity,Manifest.permission.) != PackageManager.PERMISSION_GRANTED)
+        //{
 
+        //}
         mapDoc = db.collection("GPS").document("GPS-data");
-        //mapData.put("longitude", "137-67");
-        //mapData.put("latitude", "678-09");
+        SetFireBaseLatitude("50 N");
+        SetFirebaseLongitude("30 W");
+
+
+
 
         //SetLongitude((String) mapData.get("longitude"));
         //SetLatitude((String) mapData.get("latitude"));
-        GetFireBaseLongitude();
-        GetFirebaseLatitude();
 
-        String longitude = GetLongitude();
+        //gpsLoad.findViewById(R.id.GpsLoad);
+        //GetFireBaseLongitude(longitude -> SetLongitude(longitude));
+        //GetFirebaseLatitude(latitude -> SetLatitude(latitude));
 
     }
 
@@ -80,6 +69,7 @@ public class GPS extends Fragment {
     //updates longitude in firebase value based on the value given
     public void SetFirebaseLongitude(String longitude)
     {
+        SetLongitude(longitude);
         GetMapDoc().update("longitude",longitude)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
@@ -88,17 +78,18 @@ public class GPS extends Fragment {
     //updates latitude in firebase value based on the value given
     public void SetFireBaseLatitude(String latitude)
     {
+        SetLatitude(latitude);
         GetMapDoc().update("latitude",latitude)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
     }
     public void SetLatitude(String latitude)
     {
-        Latitude = latitude;
+        this.Latitude = latitude;
     }
     public void SetLongitude(String longitude)
     {
-        Longitude = longitude;
+        this.Longitude = longitude;
     }
     public String GetLatitude()
     {
@@ -110,57 +101,52 @@ public class GPS extends Fragment {
         return Longitude;
     }
 
-    private DocumentReference GetMapDoc()
+    public DocumentReference GetMapDoc()
     {
         return mapDoc;
     }
 
-
-    public void GetFireBaseLongitude()
+    public void GetFireBaseLongitude(final LongitudeCallback callback)
     {
-        GetMapDoc().get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>(){
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot)
-            {
-                    if (documentSnapshot.exists())
-                    {
-                        //SetLongitude((String) documentSnapshot.get("longitude"));
-                        Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
-                    }
-                    else
-                    {
-                        Log.d(TAG, "No such document");
-                    }
-                }
-        });
-    }
-
-
-
-
-    public void GetFirebaseLatitude()
-    {
-        GetMapDoc().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    SetLatitude((String) doc.get("latitude"));
-                    if (doc.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + doc.getData());
-                    }
-                    else
-                    {
-                        Log.d(TAG, "No such document");
-                    }
-                }
-                else
-                {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
+        GetMapDoc().get().addOnSuccessListener(documentSnapshot -> {
+            // Retrieve the longitude from the documentSnapshot
+            String longitude = null;
+            if (documentSnapshot.exists()) {
+                longitude = (String) documentSnapshot.get("longitude");
+                Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
+            } else {
+                Log.d(TAG, "No such document");
             }
+            // Call the callback method with the retrieved longitude
+            callback.onLongCallback(longitude);
         });
     }
 
+    public void GetFirebaseLatitude(final LatitudeCallback callback)
+    {
+        GetMapDoc().get().addOnSuccessListener(documentSnapshot -> {
+            // Retrieve the longitude from the documentSnapshot
+            String latitude = null;
+            if (documentSnapshot.exists()) {
+                latitude = (String) documentSnapshot.get("longitude");
+                Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
+            } else {
+                Log.d(TAG, "No such document");
+            }
+            // Call the callback method with the retrieved longitude
+            callback.onLatCallback(latitude);
+        });
+    }
+    @Override
+    public void onLongCallback(String longitude)
+    {
+        this.Longitude = longitude;
+    }
+    @Override
+    public void onLatCallback(String longitude)
+    {
+        this.Longitude = longitude;
+    }
 
 }
+
