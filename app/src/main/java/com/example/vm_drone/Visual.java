@@ -12,6 +12,8 @@ public class Visual extends Fragment {
 
         View view = inflater.inflate(R.layout.visual_layout, container, false);
 
+
+        //Todo background should be the drone camera eventually
         return view;
     }
 }

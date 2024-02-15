@@ -11,12 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+/*
+import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.Style;
+
+ */
+
+
 import com.mapbox.maps.MapView;
 
 
 public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference mapDoc;
     private String Latitude;
     private String Longitude;
@@ -32,6 +47,8 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
         // It's not necessary and could cause issues
         // super.onCreate(savedInstanceState);
 
+        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         View view = inflater.inflate(R.layout.gps_layout, container, false);
 
         // Example of finding a view within the inflated layout
@@ -44,14 +61,15 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
     {
 
-        mapView = view.findViewById(R.id.mapView);
-        //if(ActivityCompat.checkSelfPermission(activity,Manifest.permission.) != PackageManager.PERMISSION_GRANTED)
-        //{
+        //Todo Should have a map point feature implemented and firebase data shows the map point
 
-        //}
+        mapView = view.findViewById(R.id.mapView);
+
         mapDoc = db.collection("GPS").document("GPS-data");
         SetFireBaseLatitude("50 N");
         SetFirebaseLongitude("30 W");
+
+
 
 
 
@@ -64,6 +82,38 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
         //GetFirebaseLatitude(latitude -> SetLatitude(latitude));
 
     }
+
+    /*@Override
+    public void onMapReady(@NonNull MapboxMap mapboxMap)
+    {
+        mapboxMap.setStyle(Style.DARK, new Style.OnStyleLoaded()
+        {
+            @Override public void onStyleLoaded(@NonNull Style style)
+            {
+
+                // Set up a SymbolManager instance
+                symbolManager = new SymbolManager(mapView, mapboxMap, style);
+
+                symbolManager.setIconAllowOverlap(true);
+                symbolManager.setTextAllowOverlap(true);
+
+                // Add symbol at specified lat/lon
+                Symbol symbol = symbolManager.create(new SymbolOptions()
+                        .withLatLng(new LatLng(60.169091, 24.939876))
+                        .withIconImage(String.valueOf(R.drawable.pin))
+                        .withIconSize(2.0f)
+                        .withDraggable(true));
+            }
+        });
+    }
+     */
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+    }
+
 
 
     //updates longitude in firebase value based on the value given

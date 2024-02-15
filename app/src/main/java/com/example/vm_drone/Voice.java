@@ -1,7 +1,6 @@
 package com.example.vm_drone;
 
 import static android.app.Activity.RESULT_OK;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import java.util.List;
 
 public class Voice extends Fragment {
@@ -33,6 +31,7 @@ public class Voice extends Fragment {
         voiceImage = view.findViewById(R.id.microphone);
 
         EditText speechInput = view.findViewById(R.id.TextDisplay);
+        //Todo Add a recyclerview to hold all string values given within the apps lifecycle
         voiceImage.setOnClickListener(view1 -> displaySpeechRecognizer());
         String spoken = GetSpokenText();
         speechInput.setText(spoken);

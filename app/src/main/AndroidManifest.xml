@@ -22,14 +22,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VM_Drone"
+        android:theme="@style/Theme.VM_Drone_Light"
         tools:targetApi="31">
 
         <activity
             android:name=".StartUp"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.VM_Drone">
+            android:theme="@style/Theme.VM_Drone_Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
