@@ -8,9 +8,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Point;
+import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
+import com.mapbox.maps.MapboxStyleManager;
+import com.mapbox.maps.extension.style.sources.generated.GeoJsonSource;
+import com.mapbox.maps.plugin.Plugin;
+import com.mapbox.maps.plugin.annotation.Annotation;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
+import com.mapbox.maps.plugin.annotation.AnnotationManager;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
+
+import com.mapbox.maps.plugin.annotation.AnnotationType;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.delegates.MapDelegateProvider;
+
+
 
 /*
 import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
@@ -20,13 +41,16 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
-
- */
-
-
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+
+*/
+
+//import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+
+
 
 
 public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback {
@@ -39,6 +63,9 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
     private final Activity activity = getActivity();
 
     MapView mapView;
+    //private SymbolManager symbolManager;
+    private MapboxMap mapboxMap;
+
 
 
     @Override
@@ -63,14 +90,18 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
 
         //Todo Should have a map point feature implemented and firebase data shows the map point
 
+
         mapView = view.findViewById(R.id.mapView);
+
+
+
 
         mapDoc = db.collection("GPS").document("GPS-data");
         SetFireBaseLatitude("50 N");
         SetFirebaseLongitude("30 W");
 
 
-
+        addMarker(50,40);
 
 
 
@@ -83,30 +114,12 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
 
     }
 
-    /*@Override
-    public void onMapReady(@NonNull MapboxMap mapboxMap)
+    public void addMarker(int longitude, int latitude)
     {
-        mapboxMap.setStyle(Style.DARK, new Style.OnStyleLoaded()
-        {
-            @Override public void onStyleLoaded(@NonNull Style style)
-            {
 
-                // Set up a SymbolManager instance
-                symbolManager = new SymbolManager(mapView, mapboxMap, style);
 
-                symbolManager.setIconAllowOverlap(true);
-                symbolManager.setTextAllowOverlap(true);
-
-                // Add symbol at specified lat/lon
-                Symbol symbol = symbolManager.create(new SymbolOptions()
-                        .withLatLng(new LatLng(60.169091, 24.939876))
-                        .withIconImage(String.valueOf(R.drawable.pin))
-                        .withIconSize(2.0f)
-                        .withDraggable(true));
-            }
-        });
     }
-     */
+
 
     @Override
     public void onStart() {

@@ -1,6 +1,10 @@
 package com.example.vm_drone;
 
+import static com.example.vm_drone.ConnectBluetooth.handler;
+
 import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -13,12 +17,21 @@ public class ConnectedBluetooth extends Thread {
     private final InputStream _InStream;
     private final OutputStream _OutStream;
     private String valueRead;
-
     private int timeOut = 0;
-
     private String humidity;
 
-    public ConnectedBluetooth(BluetoothSocket socket) {
+    private byte[] buffer;
+
+    private interface MessageConstants {
+        public static final int MESSAGE_READ = 0;
+        public static final int MESSAGE_WRITE = 1;
+        public static final int MESSAGE_TOAST = 2;
+
+        // ... (Add other message types here as needed.)
+    }
+
+    public ConnectedBluetooth(BluetoothSocket socket)
+    {
         _Socket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
@@ -46,53 +59,61 @@ public class ConnectedBluetooth extends Thread {
 
     public String getHumidityRead() {return humidity;}
 
-    public void setCounter(int _counter)
-    {
-        timeOut = _counter;
-    }
-    public int getCounter()
-    {
-        return timeOut;
-    }
 
     //public String getReelFeelRead() {return humidity;}
 
     public void run() {
-        //for tmp-36 one value for buffer
-        //for dht-11 two values for buffer to get humidity and temperature
-        byte[] buffer = new byte[2];
+
+        // buffer to store messages received
+        buffer = new byte[1024];
         int bytes = 0; //bytes returned from read()
-        int Readings = 0; // to control the number of reading from the Arduino
 
         // Keep listening to the InputStream until an exception occurs.
-        // We just want to get 1 temperature reading from the Arduino
-        int readSecondValue;
 
-        try {
-            if (_InStream.available() > 0) {
-                while(bytes != 2) {
-                    buffer[bytes] = (byte) _InStream.read();
-                    bytes++;
-                }
-                Readings = buffer[0];
-                //100 is the offset I reduced it to in arduino then we want to
-                readSecondValue = buffer[1];
-                //Log.e(TAG, readMessage);
-                // Value to be read by the Observer streamed by the Observable
+        while (true)
+        {
+            try {
 
-                valueRead = String.valueOf(Readings);
+                // read from InputStream and update the valueRead value
 
-                humidity = readSecondValue + "%";
-            } else {
-                // Handle the case where no data is available or implement a timeout mechanism.
-                while(_InStream.available() > 0)
-                {
-                    timeOut++;
-                }
+                bytes = _InStream.read(buffer);
+                valueRead = String.valueOf(bytes);
+                // Send the obtained bytes to the UI activity.
+                Message readMsg = handler.obtainMessage(MessageConstants.MESSAGE_READ, bytes, -1, buffer);
+                readMsg.sendToTarget();
+
             }
+            catch (IOException e)
+            {
+                Log.d(TAG, "Input stream was disconnected", e);
+                break;
+            }
+        }
+    }
+    public void write(byte[] string)
+    {
+        try
+        {
+            _OutStream.write(string);
 
-        } catch (IOException e) {
-            Log.d(TAG, "Input stream was disconnected", e);
+            //Give the message to the fragment that will be using the write functionality
+
+            Message writtenMsg = handler.obtainMessage(MessageConstants.MESSAGE_WRITE,-1,-1,string);
+            writtenMsg.sendToTarget();
+        }
+        catch (IOException e)
+        {
+            Log.e(TAG,"Message could not be sent");
+
+            //failure message back to the activity calling the method
+            Message writeErrorMsg =
+                    handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
+            Bundle bundle = new Bundle();
+            bundle.putString("toast",
+                    "Couldn't send data to the other device");
+            writeErrorMsg.setData(bundle);
+            handler.sendMessage(writeErrorMsg);
+
         }
     }
 

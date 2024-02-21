@@ -13,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import java.util.List;
 
-public class Voice extends Fragment {
+public class Voice extends Fragment
+{
 
     private String spokenText = "";
     private ImageButton voiceImage;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         View view = inflater.inflate(R.layout.voice_layout, container, false);
 
@@ -39,7 +41,8 @@ public class Voice extends Fragment {
     private static final int SPEECH_REQUEST_CODE = 0;
 
     //Create an intent that can start the Speech Recognizer activity
-    private void displaySpeechRecognizer() {
+    private void displaySpeechRecognizer()
+    {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -50,7 +53,8 @@ public class Voice extends Fragment {
     //This callback is invoked when the Speech Recognizer returns.
     //This is where you process the intent and extract the speech text from the intent.
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);

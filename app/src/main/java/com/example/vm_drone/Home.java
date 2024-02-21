@@ -48,12 +48,13 @@ public class Home extends Fragment
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //We declare a default UUID to create the global variable
 
     private JoystickView leftJoystick, rightJoystick;
+    Settings settings = new Settings();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         activity = getActivity();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         View view = inflater.inflate(R.layout.main_menu_layout, container, false);
 
         return view;
@@ -67,6 +68,26 @@ public class Home extends Fragment
         TextView height_value = view.findViewById(R.id.Height_value);
         leftJoystick = view.findViewById(R.id.Left_Stick);
         rightJoystick = view.findViewById(R.id.Right_Stick);
+        if(settings.GetJoyState() != false)
+        {
+            long interval = 0;
+            rightJoystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
+                @Override
+                public void onValueChanged(int angle, int power, int direction) {
+
+                }
+            },interval);
+
+            leftJoystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
+                @Override
+                public void onValueChanged(int angle, int power, int direction) {
+
+                }
+            },interval);
+
+        }
+
+
 
 
         BluetoothManager bluetoothManager = activity.getSystemService(BluetoothManager.class);
@@ -82,18 +103,20 @@ public class Home extends Fragment
             }
             else
             {
-                Log.d(TAG, "Device support Bluetooth");
+                Log.d(TAG, "Device does support Bluetooth");
                 //Check BT enabled. If disabled, we ask the user to enable BT
 
                 //TODO: Fix the bug within this code {
+                Intent enableBtIntent = null;
                 if (!bluetoothAdapter.isEnabled())
                 {
                     Log.d(TAG, "Bluetooth is disabled");
                     Context context = activity.getApplicationContext();
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+
+                    //if user does not have the bluetooth permissions activated
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
                     {
-
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
                                 ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED ||
                                 ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
@@ -101,19 +124,15 @@ public class Home extends Fragment
                             // Request Bluetooth permissions
                             ActivityCompat.requestPermissions(activity, new String[]
                                     {
-                                    Manifest.permission.BLUETOOTH,
-                                    Manifest.permission.BLUETOOTH_ADMIN,
-                                    Manifest.permission.BLUETOOTH_CONNECT
-                            }, REQUEST_BLUETOOTH_PERMISSIONS);
+                                            Manifest.permission.BLUETOOTH,
+                                            Manifest.permission.BLUETOOTH_ADMIN,
+                                            Manifest.permission.BLUETOOTH_CONNECT
+                                    }, REQUEST_BLUETOOTH_PERMISSIONS);
                         }
                         else
                         {
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            Log.d(TAG, "We don't have BT Permissions");
+                            // Users should have the permissions
+                            Log.d(TAG, "We have BT Permissions");
                             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                             Log.d(TAG, "Bluetooth is enabled now");
                         }
@@ -135,11 +154,9 @@ public class Home extends Fragment
                 String btDevicesString = "";
                 Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-                if (pairedDevices.size() > 0)
-                {
+                if (pairedDevices.size() > 0) {
                     // There are paired devices. Get the name and address of each paired device.
-                    for (BluetoothDevice device : pairedDevices)
-                    {
+                    for (BluetoothDevice device : pairedDevices) {
                         String deviceName = device.getName();
                         String deviceHardwareAddress = device.getAddress(); // MAC address
                         Log.d(TAG, "deviceName:" + deviceName);
@@ -149,8 +166,7 @@ public class Home extends Fragment
                         //If we find the HC 06 device (the Arduino BT module) exchanged for the raspberry pi for now
                         //We assign the device value to the Global variable BluetoothDevice
                         //We enable the button "Connect to HC 06 device"
-                        if (deviceName.equals("HC-06"))
-                        {
+                        if (deviceName.equals("HC-06")) {
                             Log.d(TAG, "HC-06 found");
                             arduinoUUID = device.getUuids()[0].getUuid();
                             arduinoBTModule = device;
@@ -202,7 +218,6 @@ public class Home extends Fragment
                 // we call the onNext() function
                 //This value will be observed by the observer
                 emitter.onNext(_connectedThread.getValueRead());
-                holdHumidityValue = _connectedThread.getHumidityRead();
                 //realfeel = CalculateRealFeel(_connectedThread.getValueRead(),_connectedThread.getHumidityRead());
             }
             //We just want to stream 1 value, so we close the BT stream

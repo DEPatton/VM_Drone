@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.util.Log;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -17,7 +16,8 @@ public class ConnectBluetooth extends Thread {
     private final static int ERROR_READ = 0;
 
     @SuppressLint("MissingPermission")
-    public ConnectBluetooth(BluetoothDevice device, UUID MY_UUID, Handler _handler) {
+    public ConnectBluetooth(BluetoothDevice device, UUID MY_UUID, Handler _handler)
+    {
         // Use a temporary object that is later assigned to Socket
         // because Socket is Final
 
@@ -41,13 +41,18 @@ public class ConnectBluetooth extends Thread {
             // Connect to the remote device through the socket. This call
             // until it succeeds or throws an exception
             _socket.connect();
-        } catch (IOException connectException) {
+        }
+        catch (IOException connectException)
+        {
             // Unable to connect; close the socket and return.
             handler.obtainMessage(ERROR_READ, "Unable to connect to the BT device").sendToTarget();
             Log.e(TAG, "connectException: " + connectException);
-            try {
+            try
+            {
                 _socket.close();
-            } catch (IOException closeException) {
+            }
+            catch (IOException closeException)
+            {
                 Log.e(TAG, "could not close the client socket", closeException);
             }
             return;
@@ -58,10 +63,14 @@ public class ConnectBluetooth extends Thread {
 
     // Makes the thread stop and closes the client
 
-    public void cancel() {
-        try {
+    public void cancel()
+    {
+        try
+        {
             _socket.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Log.e(TAG, "Could not close the client socket", e);
         }
     }

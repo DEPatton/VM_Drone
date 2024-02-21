@@ -8,4 +8,6 @@
     <string name="location">GPS</string>
     <string name="joystick_enable">Enable Joystick</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="voice_examples">Voice examples</string>
+    <string name="voice">Voice</string>
 </resources>
