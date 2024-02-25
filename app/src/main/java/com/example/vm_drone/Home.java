@@ -54,7 +54,7 @@ public class Home extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         activity = getActivity();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         View view = inflater.inflate(R.layout.main_menu_layout, container, false);
 
         return view;

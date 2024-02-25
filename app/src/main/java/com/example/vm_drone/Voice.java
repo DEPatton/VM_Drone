@@ -7,6 +7,7 @@ import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
@@ -33,6 +34,24 @@ public class Voice extends Fragment
         voiceImage = view.findViewById(R.id.microphone);
 
         EditText speechInput = view.findViewById(R.id.TextDisplay);
+
+        Button Voice_Button = view.findViewById(R.id.Voice_Exam);
+
+        Voice_Button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent i = new Intent(view.getContext(), VoiceExamples.class);
+
+                // Start the activity
+                startActivity(i);
+
+                // Finish the current activity
+
+
+            }
+        });
         //Todo Add a recyclerview to hold all string values given within the apps lifecycle
         voiceImage.setOnClickListener(view1 -> displaySpeechRecognizer());
         String spoken = GetSpokenText();

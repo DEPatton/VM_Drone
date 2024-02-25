@@ -10,4 +10,6 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="voice_examples">Voice examples</string>
     <string name="voice">Voice</string>
+    <string name="add_text">Add text</string>
+    <string name="back_navigation_button">back navigation button</string>
 </resources>

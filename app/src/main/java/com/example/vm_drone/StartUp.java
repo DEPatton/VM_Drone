@@ -19,33 +19,41 @@ public class StartUp extends AppCompatActivity
         binding = MainActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // So a new fragment is not made every fragment switch
+        Home home = new Home();
+        Settings setting = new Settings();
+        Visual visual = new Visual();
+        Voice voice = new Voice();
+        GPS gps = new GPS();
 
-        replaceFragment(new Home());
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+
+        replaceFragment(home);
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item ->
+        {
             int menuItem = item.getItemId();
             if (menuItem == R.id.settings)
             {
-                replaceFragment(new Settings());
+                replaceFragment(setting);
                 return true;
             }
             else if (menuItem == R.id.visual)
             {
-                replaceFragment(new Visual());
+                replaceFragment(visual);
                 return true;
             }
             else if (menuItem == R.id.voice)
             {
-                replaceFragment(new Voice());
+                replaceFragment(voice);
                 return true;
             }
             else if (menuItem == R.id.Home)
             {
-                replaceFragment(new Home());
+                replaceFragment(home);
                 return true;
             }
             else if (menuItem == R.id.location)
             {
-                replaceFragment(new GPS());
+                replaceFragment(gps);
                 return true;
             }
 
