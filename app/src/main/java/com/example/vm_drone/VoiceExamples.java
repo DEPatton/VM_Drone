@@ -1,7 +1,6 @@
 package com.example.vm_drone;
 
-import android.app.Activity;
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,18 +23,48 @@ public class VoiceExamples extends AppCompatActivity
 
 
         imageButton = findViewById(R.id.voice_exam_back_button);
-        StopCom.findViewById(R.id.Stop_Command);
-        LandCom.findViewById(R.id.Land_Command);
-        ForwardCom.findViewById(R.id.GoForward_Command);
-
-        imageButton.setOnClickListener(view ->
-        {
-            finish();
+        StopCom = findViewById(R.id.Stop_Command);
+        LandCom = findViewById(R.id.Land_Command);
+        ForwardCom = findViewById(R.id.GoForward_Command);
+        
+        StopCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) 
+            {
+                
+            }
         });
+        LandCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        ForwardCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) 
+            {
+
+            }
+        });
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
 
        //Todo scrollview buttons should have clickable quick commands in them and be able to send them back to the voice screen
 
 
+    }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        imageButton.setOnClickListener(view -> finish());
     }
 }

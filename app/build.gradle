@@ -83,6 +83,8 @@ dependencies {
 
     implementation("com.mapbox.maps:android:11.1.0")
 
+
+
     //Causes issues with dupe classes
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v7:0.4.0'
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v7:0.2.0'

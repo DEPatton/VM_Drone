@@ -37,7 +37,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VoiceExamples"
+        <activity
+            android:name=".VoiceExamples"
+            android:exported="true"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".VisualExample"
             android:exported="true"
             android:screenOrientation="landscape"/>
     </application>

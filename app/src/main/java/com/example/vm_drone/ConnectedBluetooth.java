@@ -62,7 +62,8 @@ public class ConnectedBluetooth extends Thread {
 
     //public String getReelFeelRead() {return humidity;}
 
-    public void run() {
+    public String read()
+    {
 
         // buffer to store messages received
         buffer = new byte[1024];
@@ -72,16 +73,20 @@ public class ConnectedBluetooth extends Thread {
 
         while (true)
         {
-            try {
-
+            try
+            {
                 // read from InputStream and update the valueRead value
 
                 bytes = _InStream.read(buffer);
-                valueRead = String.valueOf(bytes);
+                valueRead = buffer.toString();
+                //valueRead = String.valueOf(bytes);
                 // Send the obtained bytes to the UI activity.
                 Message readMsg = handler.obtainMessage(MessageConstants.MESSAGE_READ, bytes, -1, buffer);
                 readMsg.sendToTarget();
-
+                if(valueRead != "")
+                {
+                    break;
+                }
             }
             catch (IOException e)
             {
@@ -89,6 +94,7 @@ public class ConnectedBluetooth extends Thread {
                 break;
             }
         }
+        return valueRead;
     }
     public void write(byte[] string)
     {
@@ -119,11 +125,16 @@ public class ConnectedBluetooth extends Thread {
 
     // Call the method from the main Activity to shut down the connection.
 
-    public void cancel() {
-        try {
+    public void cancel()
+    {
+        try
+        {
             _Socket.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Log.e(TAG, "Could not close the connect socket", e);
         }
     }
+
 }

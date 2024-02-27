@@ -8,28 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
-import com.mapbox.maps.MapboxStyleManager;
-import com.mapbox.maps.extension.style.sources.generated.GeoJsonSource;
-import com.mapbox.maps.plugin.Plugin;
-import com.mapbox.maps.plugin.annotation.Annotation;
-import com.mapbox.maps.plugin.annotation.AnnotationConfig;
-import com.mapbox.maps.plugin.annotation.AnnotationManager;
-import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
-import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
-import com.mapbox.maps.plugin.annotation.AnnotationType;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
-import com.mapbox.maps.plugin.delegates.MapDelegateProvider;
 
 
 
@@ -187,7 +171,8 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
 
     public void GetFirebaseLatitude(final LatitudeCallback callback)
     {
-        GetMapDoc().get().addOnSuccessListener(documentSnapshot -> {
+        GetMapDoc().get().addOnSuccessListener(documentSnapshot ->
+        {
             // Retrieve the longitude from the documentSnapshot
             String latitude = null;
             if (documentSnapshot.exists()) {

@@ -2,18 +2,15 @@ package com.example.vm_drone;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +23,7 @@ import java.util.Set;
 import java.util.UUID;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import androidx.lifecycle.ViewModelProvider;
 import com.zerokol.views.joystickView.JoystickView;
 
 import io.reactivex.Observable;
@@ -43,12 +40,15 @@ public class Home extends Fragment
 
     private final static int ERROR_READ = 0; // used in bluetooth handler to identify message update
     BluetoothDevice arduinoBTModule = null;
+
     String holdHumidityValue;
     Activity activity;
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //We declare a default UUID to create the global variable
-
     private JoystickView leftJoystick, rightJoystick;
     Settings settings = new Settings();
+
+    private ItemViewModel viewModel;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -66,6 +66,7 @@ public class Home extends Fragment
 
         AppCompatImageButton bluetooth_button = view.findViewById(R.id.bluetooth_connect);
         TextView height_value = view.findViewById(R.id.Height_value);
+        viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         leftJoystick = view.findViewById(R.id.Left_Stick);
         rightJoystick = view.findViewById(R.id.Right_Stick);
         if(settings.GetJoyState() != false)
@@ -177,6 +178,8 @@ public class Home extends Fragment
                             int duration = Toast.LENGTH_SHORT;
                             Toast.makeText(activity, text, duration).show();
 
+                            viewModel.selectItem(arduinoBTModule);
+
                             //HC -06 Found, enabling the button to read results
                             //connectToDevice.setEnabled(true);
                         }
@@ -185,7 +188,10 @@ public class Home extends Fragment
                 }
             }
             Log.d(TAG, "Button Pressed");
-            RunBluetooth();
+
+            //ItemViewModel itemViewModel = new ViewModelProvider(activity.,);
+            //itemViewModel.selectItem(arduinoBTModule);
+            //RunBluetooth();
         });
 
     }
@@ -194,11 +200,12 @@ public class Home extends Fragment
     //The code will be executed when an Observer subscribes to the the Observable
 
 
+    /*
     final Observable<String> connectToBTObservable = Observable.create(emitter ->
     {
 
         Log.d(TAG, "Calling connectThread class");
-        //Call the constructor of the ConnectThread class
+        //        //Call the constructor of the ConnectThread class
         //Passing the Arguments: an Object that represents the BT device,
         // the UUID and then the handler to update the UI
         ConnectBluetooth connectThread = new ConnectBluetooth(arduinoBTModule, arduinoUUID, handler);
@@ -256,5 +263,7 @@ public class Home extends Fragment
 
         }
     }
+
+     */
 }
 
