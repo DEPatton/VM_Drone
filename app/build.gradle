@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.3.0'
 
     implementation project(path: ':joystickView')
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -97,5 +98,5 @@ dependencies {
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v7:0.4.0'
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v7:0.2.0'
 
-
+    implementation 'com.squareup.picasso:picasso:2.8'
 }

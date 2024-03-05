@@ -26,10 +26,6 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.zerokol.views.joystickView.JoystickView;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 public class Home extends Fragment
 {
     private static final String TAG = "Greedy";
@@ -46,6 +42,8 @@ public class Home extends Fragment
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //We declare a default UUID to create the global variable
     private JoystickView leftJoystick, rightJoystick;
     Settings settings = new Settings();
+
+    private Boolean JoyState;
 
     private ItemViewModel viewModel;
 
@@ -69,24 +67,28 @@ public class Home extends Fragment
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         leftJoystick = view.findViewById(R.id.Left_Stick);
         rightJoystick = view.findViewById(R.id.Right_Stick);
+        /*
         if(settings.GetJoyState() != false)
         {
             long interval = 0;
             rightJoystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
                 @Override
-                public void onValueChanged(int angle, int power, int direction) {
+                public void onValueChanged(int angle, int power, int direction)
+                {
 
                 }
             },interval);
 
             leftJoystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
                 @Override
-                public void onValueChanged(int angle, int power, int direction) {
+                public void onValueChanged(int angle, int power, int direction)
+                {
 
                 }
             },interval);
 
         }
+         */
 
 
 
@@ -96,6 +98,7 @@ public class Home extends Fragment
         //Display all the linked BT Devices
         bluetooth_button.setOnClickListener(view1 ->
         {
+            Context context = activity.getApplicationContext();
             //Check if the phone supports BT
             if (bluetoothAdapter == null)
             {
@@ -108,12 +111,11 @@ public class Home extends Fragment
                 //Check BT enabled. If disabled, we ask the user to enable BT
 
                 //TODO: Fix the bug within this code {
-                Intent enableBtIntent = null;
+
                 if (!bluetoothAdapter.isEnabled())
                 {
                     Log.d(TAG, "Bluetooth is disabled");
-                    Context context = activity.getApplicationContext();
-                    enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 
                     //if user does not have the bluetooth permissions activated
                     if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
@@ -141,7 +143,7 @@ public class Home extends Fragment
                     }
                     else
                     {
-                        Log.d(TAG, "We have BT Permissions");
+                        Log.d(TAG, "We have permissions");
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                         Log.d(TAG, "Bluetooth is enabled now");
                     }
@@ -149,7 +151,35 @@ public class Home extends Fragment
                 }
                 else
                 {
-                    Log.d(TAG, "Bluetooth is enabled");
+                    Log.d(TAG, "Bluetooth already is enabled");
+                    //Check for permissions
+                    //if user does not have the bluetooth permissions activated
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
+                                ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED ||
+                                ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
+                        {
+                            // Request Bluetooth permissions
+                            ActivityCompat.requestPermissions(activity, new String[]
+                                    {
+                                            Manifest.permission.BLUETOOTH,
+                                            Manifest.permission.BLUETOOTH_ADMIN,
+                                            Manifest.permission.BLUETOOTH_CONNECT
+                                    }, REQUEST_BLUETOOTH_PERMISSIONS);
+                        }
+                        else
+                        {
+                            // Users should have the permissions
+                            Log.d(TAG, "We have BT Permissions");
+                        }
+
+                    }
+                    else
+                    {
+                        Log.d(TAG, "We have BT Permissions");
+                    }
+
                 }
                 // Todo }
                 String btDevicesString = "";
@@ -194,6 +224,33 @@ public class Home extends Fragment
             //RunBluetooth();
         });
 
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        try
+        {
+            viewModel.getSwitchData().observe(getViewLifecycleOwner(), item -> {
+                // Perform an action with the latest item data.
+                JoyState = item;
+            });
+            if(JoyState == true)
+            {
+                // Todo fix landscape mode
+                //activity.setContentView(R.layout.main_menu_layout_landscape);
+                //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        }
+        catch (Exception e)
+        {
+            if(JoyState == null)
+            {
+                return;
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     // Create an Observable from RxAndroid

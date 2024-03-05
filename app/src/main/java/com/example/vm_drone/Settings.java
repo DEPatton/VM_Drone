@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.zerokol.views.joystickView.JoystickView;
@@ -21,8 +22,9 @@ public class Settings extends Fragment
     private TextView DarkText, JoyText;
 
     private Switch DarkModeSwitch, JoyStickSwitch;
-
     private boolean darkModeState, joyStickState;
+
+    private ItemViewModel viewModel;
 
     private Activity activity = getActivity();
     @Override
@@ -39,6 +41,7 @@ public class Settings extends Fragment
         JoyText = view.findViewById(R.id.Joystick_Text);
         DarkModeSwitch = view.findViewById(R.id.Dark_mode);
         JoyStickSwitch = view.findViewById(R.id.Enable_Joysticks);
+        viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         DarkModeSwitch.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -61,6 +64,8 @@ public class Settings extends Fragment
                     CharSequence text = "Joystick Enabled";
                     int duration = Toast.LENGTH_SHORT;
                     Toast.makeText(getActivity(), text, duration).show();
+                    viewModel.selectItem(GetJoyState());
+
                 }
                 else
                 {

@@ -9,12 +9,24 @@ import androidx.lifecycle.ViewModel;
 public class ItemViewModel extends ViewModel {
     private final MutableLiveData<BluetoothDevice> selectedItem = new MutableLiveData<BluetoothDevice>();
 
+    private final MutableLiveData<Boolean> optionItem = new MutableLiveData<>();
+
     public void selectItem(BluetoothDevice bt)
     {
         selectedItem.setValue(bt);
     }
 
+    public void selectItem(Boolean bool)
+    {
+        optionItem.setValue(bool);
+    }
+
     public LiveData<BluetoothDevice> getSelectedItem() {
         return selectedItem;
+    }
+
+    public LiveData<Boolean> getSwitchData()
+    {
+        return optionItem;
     }
 }

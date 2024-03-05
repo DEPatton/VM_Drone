@@ -15,8 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="188dp"
-        android:layout_marginBottom="572dp"
+        android:layout_marginEnd="232dp"
+        android:layout_marginBottom="308dp"
         android:text="@string/dark_mode"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -30,8 +30,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="188dp"
-        android:layout_marginBottom="352dp"
+        android:layout_marginEnd="252dp"
+        android:layout_marginBottom="140dp"
         android:text="@string/joystick_enable"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -44,8 +44,8 @@
         android:layout_height="105dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="352dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -55,8 +55,8 @@
         android:layout_height="105dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="544dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="288dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
