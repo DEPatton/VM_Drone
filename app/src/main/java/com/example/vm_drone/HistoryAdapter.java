@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>
 {
 
-    Context context;
-    ArrayList<ChatHistory> chatHistory;
+    private final Context context;
+    private ArrayList<ChatHistory> chatHistory;
  public HistoryAdapter(Context context, ArrayList<ChatHistory> chatHistory)
  {
      this.context = context;
@@ -51,7 +51,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     // Assigns all the views in the item to their specific variable
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView text_display;
+        private final TextView text_display;
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);

@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class VisualExample extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.visual_examples_layout);
+
 
         firstStorageRef = FirebaseStorage.getInstance().getReference().child("Example_Images/IMG_3632.jpeg");
 
@@ -55,9 +57,13 @@ public class VisualExample extends AppCompatActivity
 
         imageButton.setOnClickListener(view -> finish());
 
-        downloadAndDisplayImage(firstStorageRef, firstImageView, "IMG_3632");
-        downloadAndDisplayImage(secondStorageRef, secondImageView, "IMG_3633");
-        downloadAndDisplayImage(thirdStorageRef, thirdImageView, "IMG_3635");
+
+        // Todo clean up this code but for now it works
+        downloadAndDisplayImage(firstStorageRef,firstImageView,"IMG_3632");
+        downloadAndDisplayImage(secondStorageRef,secondImageView,"IMG_3633");
+        downloadAndDisplayImage(thirdStorageRef,thirdImageView,"IMG_3635");
+
+
 
 
         // Todo add pictures from firebase and display it using the image view inside of the scrollview
@@ -66,8 +72,7 @@ public class VisualExample extends AppCompatActivity
     {
         try {
             final File localFile = File.createTempFile(fileNamePrefix, "jpeg");
-            storageRef.getFile(localFile).addOnSuccessListener(taskSnapshot ->
-            {
+            storageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
                 Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                 imageView.setImageBitmap(bitmap);
             }).addOnFailureListener(e -> {

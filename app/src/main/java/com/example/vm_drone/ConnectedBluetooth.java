@@ -10,6 +10,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class ConnectedBluetooth extends Thread {
     private static final String TAG = "Greedy";
@@ -17,7 +18,6 @@ public class ConnectedBluetooth extends Thread {
     private final InputStream _InStream;
     private final OutputStream _OutStream;
     private String valueRead;
-    private byte[] buffer;
 
     private interface MessageConstants {
         int MESSAGE_READ = 0;
@@ -62,8 +62,8 @@ public class ConnectedBluetooth extends Thread {
     {
 
         // buffer to store messages received
-        buffer = new byte[1024];
-        int bytes = 0; //bytes returned from read()
+        byte[] buffer = new byte[1024];
+        int bytes; //bytes returned from read()
 
         // Keep listening to the InputStream until an exception occurs.
 
@@ -79,7 +79,7 @@ public class ConnectedBluetooth extends Thread {
                 // Send the obtained bytes to the UI activity.
                 Message readMsg = handler.obtainMessage(MessageConstants.MESSAGE_READ, bytes, -1, buffer);
                 readMsg.sendToTarget();
-                if(valueRead != "")
+                if(!Objects.equals(valueRead, ""))
                 {
                     break;
                 }

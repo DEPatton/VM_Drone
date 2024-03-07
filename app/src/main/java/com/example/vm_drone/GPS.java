@@ -7,64 +7,53 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mapbox.maps.MapView;
-import com.mapbox.maps.MapboxMap;
 
 
 
 
-/*
-import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions;
-import com.mapbox.mapboxsdk.annotations.Marker;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.maps.MapView;
-import com.mapbox.maps.MapboxMap;
-import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
-
-*/
-
-//import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 
 
 
 
-public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback {
+public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback, OnMapReadyCallback {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference mapDoc;
-    private String Latitude;
-    private String Longitude;
+    private int Latitude;
+    private int Longitude;
 
     private final Activity activity = getActivity();
+    private GoogleMap _map;
 
-    MapView mapView;
-    //private SymbolManager symbolManager;
-    private MapboxMap mapboxMap;
+    FrameLayout map;
+
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Remove the super.onCreate(savedInstanceState) from onCreateView
-        // It's not necessary and could cause issues
-        // super.onCreate(savedInstanceState);
+        // Remove the super.onCreate(savedInstanceState) from onCreateView;
 
         //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         View view = inflater.inflate(R.layout.gps_layout, container, false);
+        this.map = view.findViewById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
-        // Example of finding a view within the inflated layout
-        // Note: Uncomment the line below if you need to find a view by ID
-        // TextView helloWorldTextView = view.findViewById(R.id.HelloWorld);
+        // Get the SupportMapFragment and request notification when the map is ready to be used.
 
         return view;
     }
@@ -72,17 +61,17 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
     {
 
-        //Todo Should have a map point feature implemented and firebase data shows the map point
+        //Todo map feature is done just make it dynamic
 
 
-        mapView = view.findViewById(R.id.mapView);
-
+        //mapView = view.findViewById(R.id.mapView);
 
 
 
         mapDoc = db.collection("GPS").document("GPS-data");
-        SetFireBaseLatitude("50 N");
-        SetFirebaseLongitude("30 W");
+        SetFireBaseLatitude(50);
+        SetFirebaseLongitude(30);
+
 
 
         addMarker(50,40);
@@ -100,8 +89,12 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
 
     public void addMarker(int longitude, int latitude)
     {
-
-
+        /*
+        LatLng DronePos = new LatLng(latitude, longitude);
+        this._map.addMarker(new MarkerOptions()
+                .position(DronePos)
+                .title("Drone"));
+         */
     }
 
 
@@ -114,7 +107,7 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
 
 
     //updates longitude in firebase value based on the value given
-    public void SetFirebaseLongitude(String longitude)
+    public void SetFirebaseLongitude(int longitude)
     {
         SetLongitude(longitude);
         GetMapDoc().update("longitude",longitude)
@@ -123,27 +116,27 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
     }
 
     //updates latitude in firebase value based on the value given
-    public void SetFireBaseLatitude(String latitude)
+    public void SetFireBaseLatitude(Integer latitude)
     {
         SetLatitude(latitude);
         GetMapDoc().update("latitude",latitude)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
     }
-    public void SetLatitude(String latitude)
+    public void SetLatitude(int latitude)
     {
         this.Latitude = latitude;
     }
-    public void SetLongitude(String longitude)
+    public void SetLongitude(int longitude)
     {
         this.Longitude = longitude;
     }
-    public String GetLatitude()
+    public int GetLatitude()
     {
         return Latitude;
     }
 
-    public String GetLongitude()
+    public int GetLongitude()
     {
         return Longitude;
     }
@@ -157,9 +150,9 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
     {
         GetMapDoc().get().addOnSuccessListener(documentSnapshot -> {
             // Retrieve the longitude from the documentSnapshot
-            String longitude = null;
+            Integer longitude = 0;
             if (documentSnapshot.exists()) {
-                longitude = (String) documentSnapshot.get("longitude");
+                longitude = (Integer) documentSnapshot.get("longitude");
                 Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
             } else {
                 Log.d(TAG, "No such document");
@@ -174,9 +167,9 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
         GetMapDoc().get().addOnSuccessListener(documentSnapshot ->
         {
             // Retrieve the longitude from the documentSnapshot
-            String latitude = null;
+            int latitude = 0;
             if (documentSnapshot.exists()) {
-                latitude = (String) documentSnapshot.get("longitude");
+                latitude = (Integer) documentSnapshot.get("longitude");
                 Log.d(TAG, "DocumentSnapshot data: " + documentSnapshot.getData());
             } else {
                 Log.d(TAG, "No such document");
@@ -186,15 +179,30 @@ public class GPS extends Fragment implements LongitudeCallback, LatitudeCallback
         });
     }
     @Override
-    public void onLongCallback(String longitude)
+    public void onLongCallback(int longitude)
     {
         this.Longitude = longitude;
     }
     @Override
-    public void onLatCallback(String longitude)
+    public void onLatCallback(int longitude)
     {
         this.Longitude = longitude;
     }
 
+    public GoogleMap get_map() {
+        return _map;
+    }
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap)
+    {
+        this._map = googleMap;
+        LatLng florida = new LatLng(28.578216, -81.308165);
+        this._map.addMarker(new MarkerOptions()
+                .position(florida)
+                .title("Marker in Sydney"));
+        this._map.moveCamera(CameraUpdateFactory.newLatLng(florida));
+    }
 }
 

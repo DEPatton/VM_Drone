@@ -90,7 +90,8 @@ public class Voice extends Fragment
                     setReadText(speechInput.getText().toString());
 
                     // Todo try catch
-                    if (bluetoothMod != null) {
+                    if (bluetoothMod != null)
+                    {
                         Send(getReadText());
                         AddChatHistory(getReadText());
                         Receive();
@@ -100,6 +101,8 @@ public class Voice extends Fragment
                         Toast.makeText(getActivity(), text, duration).show();
                     }
                     //AddChatHistory(getReadText());
+                    //clears the edit text field for other commands that come through
+                    speechInput.setText("");
                     return true;
                 }
                 return false;

@@ -37,11 +37,9 @@ public class Home extends Fragment
     private final static int ERROR_READ = 0; // used in bluetooth handler to identify message update
     BluetoothDevice arduinoBTModule = null;
 
-    String holdHumidityValue;
     Activity activity;
     UUID arduinoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //We declare a default UUID to create the global variable
     private JoystickView leftJoystick, rightJoystick;
-    Settings settings = new Settings();
 
     private Boolean JoyState;
 
@@ -210,6 +208,7 @@ public class Home extends Fragment
 
                             viewModel.selectItem(arduinoBTModule);
 
+
                             //HC -06 Found, enabling the button to read results
                             //connectToDevice.setEnabled(true);
                         }
@@ -253,74 +252,5 @@ public class Home extends Fragment
         }
     }
 
-    // Create an Observable from RxAndroid
-    //The code will be executed when an Observer subscribes to the the Observable
-
-
-    /*
-    final Observable<String> connectToBTObservable = Observable.create(emitter ->
-    {
-
-        Log.d(TAG, "Calling connectThread class");
-        //        //Call the constructor of the ConnectThread class
-        //Passing the Arguments: an Object that represents the BT device,
-        // the UUID and then the handler to update the UI
-        ConnectBluetooth connectThread = new ConnectBluetooth(arduinoBTModule, arduinoUUID, handler);
-        connectThread.run();
-        SystemClock.sleep(2000);
-
-        //Check if Socket connected
-        if (connectThread.getSocket().isConnected())
-        {
-            Log.d(TAG, "Calling ConnectedThread class");
-            //The pass the Open socket as arguments to call the constructor of ConnectedThread
-            ConnectedBluetooth _connectedThread = new ConnectedBluetooth(connectThread.getSocket());
-            _connectedThread.run();
-            if (_connectedThread.getValueRead() != null)
-            {
-                // If we have read a value from the Arduino
-                // we call the onNext() function
-                //This value will be observed by the observer
-                emitter.onNext(_connectedThread.getValueRead());
-                //realfeel = CalculateRealFeel(_connectedThread.getValueRead(),_connectedThread.getHumidityRead());
-            }
-            //We just want to stream 1 value, so we close the BT stream
-            _connectedThread.cancel();
-        }
-        //SystemClock.sleep(5000); // simulate delay
-        //Then we close the socket connection
-        connectThread.cancel();
-        //We could Override the onComplete function
-        emitter.onComplete();
-
-    });
-
-    @SuppressLint("CheckResult")
-    public void RunBluetooth()
-    {
-        //Todo Add functionality to receive things from bluetooth and to send things using bluetooth as well
-        //edit.setText("");
-        if (arduinoBTModule != null)
-        {
-            //We subscribe to the observable until the onComplete() is called
-            //We also define control the thread management with
-            // subscribeOn:  the thread in which you want to execute the action
-            // observeOn: the thread in which you want to get the response
-            connectToBTObservable.
-                    observeOn(AndroidSchedulers.mainThread()).
-                    subscribeOn(Schedulers.io()).
-                    subscribe(valueRead -> {
-                        //valueRead returned by the onNext() from the Observable
-                        //edit.setText(valueRead);
-                        //Humidity.setText(holdHumidityValue);
-                        //feelslike.setText(String.valueOf(realfeel));
-
-                        //We just scratched the surface with RxAndroid
-                    });
-
-        }
-    }
-
-     */
 }
 
