@@ -195,7 +195,8 @@ public class Home extends Fragment
                         //If we find the HC 06 device (the Arduino BT module) exchanged for the raspberry pi for now
                         //We assign the device value to the Global variable BluetoothDevice
                         //We enable the button "Connect to HC 06 device"
-                        if (deviceName.equals("HC-06")) {
+                        if (deviceName.equals("HC-06"))
+                        {
                             Log.d(TAG, "HC-06 found");
                             arduinoUUID = device.getUuids()[0].getUuid();
                             arduinoBTModule = device;
@@ -208,19 +209,12 @@ public class Home extends Fragment
 
                             viewModel.selectItem(arduinoBTModule);
 
-
-                            //HC -06 Found, enabling the button to read results
-                            //connectToDevice.setEnabled(true);
                         }
-                        //btDevices.setText(btDevicesString);
                     }
                 }
             }
             Log.d(TAG, "Button Pressed");
 
-            //ItemViewModel itemViewModel = new ViewModelProvider(activity.,);
-            //itemViewModel.selectItem(arduinoBTModule);
-            //RunBluetooth();
         });
 
     }

@@ -21,7 +21,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.848" />
         -->
-
+    <ProgressBar
+        android:id="@+id/LoadingBar"
+        android:layout_width="62dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="392dp"
+        android:layout_marginEnd="172dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/TextDisplay"
@@ -49,17 +56,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.02" />
 
+
     <Button
-        android:id="@+id/Voice_Exam"
+        android:id="@+id/Voice_Btn"
         android:layout_width="155dp"
         android:layout_height="54dp"
         android:text="@string/voice_examples"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
+        app:layout_constraintVertical_bias="0.808" />
 
     <ImageButton
         android:id="@+id/microphone"

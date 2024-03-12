@@ -3,19 +3,21 @@ package com.example.vm_drone;
 
 
 import android.os.Bundle;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.vm_drone.databinding.MainActivityBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class StartUp extends AppCompatActivity
+public class StartUp extends AppCompatActivity implements VoiceExamplesPopup.DialogListener
 {
-    MainActivityBinding binding;
+    // So a new fragment is not made every fragment switch
+    private final Home home = new Home();
+    private final Settings setting = new Settings();
+    private final Visual visual = new Visual();
+    private final Voice voice = new Voice();
+    private final GPS gps = new GPS();
+    private MainActivityBinding binding;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -24,15 +26,9 @@ public class StartUp extends AppCompatActivity
 
         setContentView(binding.getRoot());
 
-        // So a new fragment is not made every fragment switch
-        Home home = new Home();
-        Settings setting = new Settings();
-        Visual visual = new Visual();
-        Voice voice = new Voice();
-        GPS gps = new GPS();
 
 
-        replaceFragment(home);
+        //replaceFragment(home);
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item ->
         {
             int menuItem = item.getItemId();
@@ -74,4 +70,9 @@ public class StartUp extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onDataEntered(String data)
+    {
+        voice.AddChatHistory(data);
+    }
 }

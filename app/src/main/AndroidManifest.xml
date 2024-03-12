@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--<meta-data
-        android:name = "Mapbox"
-        android:value = "${KEY}"/>
-        -->
-
 
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -49,12 +44,9 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <activity
-        android:name=".VoiceExamples"
-        android:exported="true"/>
         <!--
-        android:screenOrientation="landscape"
-        -->
+            android:screenOrientation="landscape"
+            -->
         <activity
             android:name=".VisualExample"
             android:exported="true"/>

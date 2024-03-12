@@ -22,18 +22,26 @@
         app:layout_constraintVertical_bias="0.848" />
         -->
 
+    <ProgressBar
+        android:id="@+id/LoadingBar"
+        android:layout_width="62dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="312dp"
+        android:layout_marginEnd="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/TextDisplay"
         android:layout_width="288dp"
         android:layout_height="63dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginBottom="176dp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        android:imeOptions="actionDone"
-        android:singleLine="true"/>
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
@@ -47,10 +55,10 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintVertical_bias="0.019" />
 
     <Button
-        android:id="@+id/Voice_Exam"
+        android:id="@+id/Voice_Btn"
         android:layout_width="155dp"
         android:layout_height="54dp"
         android:text="@string/voice_examples"
@@ -59,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
+        app:layout_constraintVertical_bias="0.722" />
 
     <ImageButton
         android:id="@+id/microphone"
@@ -74,10 +82,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView"
-        android:layout_width="398dp"
-        android:layout_height="371dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="332dp"
+        android:layout_width="359dp"
+        android:layout_height="285dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

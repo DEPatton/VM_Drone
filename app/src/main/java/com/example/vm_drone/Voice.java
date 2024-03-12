@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -27,19 +28,23 @@ import java.util.UUID;
 
 public class Voice extends Fragment
 {
-
     private String spokenText = "";
+
     private String readText;
+
     private ImageButton voiceImage;
+
     private HistoryAdapter adapter;
 
-    private Home home = new Home();
+    private final Home home = new Home();
     public static Handler handler = new Handler();
 
     private BluetoothDevice bluetoothMod;
+
     private final UUID uuid = home.arduinoUUID;
 
     private ConnectedBluetooth _connectedThread = null;
+
     private ConnectBluetooth connectBluetooth = null;
 
     private ItemViewModel viewModel;
@@ -49,9 +54,7 @@ public class Voice extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
-        View view = inflater.inflate(R.layout.voice_layout, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.voice_layout, container, false);
     }
 
     @Override
@@ -61,9 +64,9 @@ public class Voice extends Fragment
 
         EditText speechInput = view.findViewById(R.id.TextDisplay);
 
-        Button Voice_Button = view.findViewById(R.id.Voice_Exam);
-
         RecyclerView recyclerView = view.findViewById(R.id.RecyclerView);
+
+        Button popup = view.findViewById(R.id.Voice_Btn);
 
         adapter = new HistoryAdapter(view.getContext(), chatHistoryArray);
 
@@ -74,12 +77,22 @@ public class Voice extends Fragment
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
 
+        ProgressBar loadingBar = view.findViewById(R.id.LoadingBar);
+
+        popup.setOnClickListener(view12 ->
+        {
+            // Calls a new dialog fragment to get the voice examples from and inflates the layout
+            VoiceExamplesPopup popup1 = new VoiceExamplesPopup();
+            popup1.show(getParentFragmentManager(),"popup");
+
+        });
+
+
         // Gets the Bluetooth device value from the Home fragment
         viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            // Perform an action with the latest item data.
-
             bluetoothMod = item;
         });
+
 
         speechInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -92,10 +105,15 @@ public class Voice extends Fragment
                     // Todo try catch
                     if (bluetoothMod != null)
                     {
+                        //Turns on progress bar
+                        loadingBar.setVisibility(View.VISIBLE);
                         Send(getReadText());
+                        loadingBar.setVisibility(View.INVISIBLE);
                         AddChatHistory(getReadText());
                         Receive();
-                    } else {
+                    }
+                    else
+                    {
                         CharSequence text = "Not Connected to Bluetooth Device";
                         int duration = Toast.LENGTH_SHORT;
                         Toast.makeText(getActivity(), text, duration).show();
@@ -108,22 +126,7 @@ public class Voice extends Fragment
                 return false;
             }
         });
-        Voice_Button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent i = new Intent(view.getContext(), VoiceExamples.class);
 
-                // Start the activity
-                startActivity(i);
-
-                // Finish the current activity
-
-
-            }
-        });
-        //Todo Add a recyclerview to hold all string values given within the apps lifecycle
         voiceImage.setOnClickListener(view1 -> displaySpeechRecognizer());
     }
     @Override
@@ -158,12 +161,19 @@ public class Voice extends Fragment
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
 
-            //spokenText can now be accessed via a setter
-            //SetSpokenText(results.get(0));
-
             // Todo add a char limit
-            Send(results.get(0));
-            AddChatHistory(results.get(0));
+            if (bluetoothMod != null)
+            {
+                Send(results.get(0));
+                AddChatHistory(results.get(0));
+            }
+            else
+            {
+                CharSequence text = "Not Connected to Bluetooth Device";
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(getActivity(), text, duration).show();
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -221,6 +231,7 @@ public class Voice extends Fragment
     }
     public void Receive()
     {
+        // Todo decode the byte array to a string we can use
         if(connectBluetooth == null)
         {
             connectBluetooth = new ConnectBluetooth(bluetoothMod,uuid,handler);
@@ -236,4 +247,5 @@ public class Voice extends Fragment
             String RecievedMessage = _connectedThread.read();
         }
     }
+
 }

@@ -15,8 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="232dp"
-        android:layout_marginBottom="308dp"
+        android:layout_marginEnd="464dp"
+        android:layout_marginBottom="224dp"
         android:text="@string/dark_mode"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -30,8 +30,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="252dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="484dp"
+        android:layout_marginBottom="92dp"
         android:text="@string/joystick_enable"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -40,23 +40,23 @@
 
     <Switch
         android:id="@+id/Enable_Joysticks"
-        android:layout_width="97dp"
+        android:layout_width="105dp"
         android:layout_height="105dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="320dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Switch
         android:id="@+id/Dark_mode"
-        android:layout_width="103dp"
+        android:layout_width="105dp"
         android:layout_height="105dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="92dp"
-        android:layout_marginBottom="288dp"
+        android:layout_marginEnd="324dp"
+        android:layout_marginBottom="224dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
